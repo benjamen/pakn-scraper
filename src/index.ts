@@ -7,6 +7,7 @@ import json
 import re
 from datetime import datetime
 from typing import List, Dict, Any
+import { upsertProductToFrappe } from './frappe.ts'
 
 # Load environment variables
 from dotenv import load_dotenv
@@ -131,7 +132,7 @@ async def process_found_product_entries(categorised_url, product_entries):
     for product_entry in product_entries:
         product = parse_product_entry(product_entry, categorised_url["categories"])
         if database_mode and product:
-            response = await upsert_product_to_mysql(product)
+            response = await upsertProductToFrappe(product)
             if response == "NewProduct":
                 per_page_log_stats["newProducts"] += 1
             elif response == "PriceChanged":
